@@ -39,16 +39,16 @@ cd ~/klipper
 make menuconfig
 ```
 3. Use these settings to compile the firmware.
-![Firmware Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/compile.png?raw=true)
+![Firmware Image](./Images/compile.png)
 4. Once set, hit 'Q' and when asked, select yes to save.
 5. Type ```make``` to compile.
 6. Disconnect power to Eddy
 7. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your Raspberry Pi
-![Boot Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/boot.png?raw=true)
+![Boot Image](./Images/boot.png)
 8. SSH into raspberry Pi
 9. Type ```lsusb``` into the command line. You should see eddy. 
 
-![LSUSB Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/lsusb.png?raw=true)
+![LSUSB Image](./Images/lsusb.png)
 
 10. Type  ```cd ~/klipper``` into command line
 11. Type ```make flash FLASH_DEVICE=2e8a:0003```
@@ -141,7 +141,7 @@ speed: 200
 27. Home All Axes and move Z 10 above bed
 28. Set idle timeout ```SET_IDLE_TIMEOUT TIMEOUT=36000```
 29. Record ambient temp of the BTT Eddy Sensor
-![Eddy Temperature](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/eddy-temp.jpg?raw=true)
+![Eddy Temperature](./Images/eddy-temp.jpg)
 30. Set max temp for bed (i.e 100c) and set typical temperature for hotend (200c)
 31. Wait for BTT Eddy temp to stabilize then record temp.
 32. Return to room temp by turning off bed and hotend
