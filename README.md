@@ -1,5 +1,6 @@
 # Installation of EDDY USB V1 and Raspberry Pi
 
+Thanks for [krautech's](https://github.com/krautech/btt-eddy-guide) contribution.
 
 > [!WARNING]  
 > [KAMP aka Klipper-Adaptive-Meshing-Purging](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) should be removed from your klipper prior to using Eddy. Please comment out the include line. ie ```#[include ./KAMP/adaptive_meshing.cfg]``` from your KAMP_SETTINGS.cfg
