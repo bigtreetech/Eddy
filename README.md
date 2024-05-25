@@ -1,6 +1,5 @@
-# Installation of EDDY USB V1 and Raspberry Pi
+# Installation of EDDY USB V1 - Last Updated 25th May 2024
 
-Thanks for [krautech's](https://github.com/krautech/btt-eddy-guide) contribution.
 
 > [!WARNING]  
 > [KAMP aka Klipper-Adaptive-Meshing-Purging](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) should be removed from your klipper prior to using Eddy. Please comment out the include line. ie ```#[include ./KAMP/adaptive_meshing.cfg]``` from your KAMP_SETTINGS.cfg
@@ -12,9 +11,8 @@ Thanks for [krautech's](https://github.com/krautech/btt-eddy-guide) contribution
 > 
 > This will be merged into mainline klipper at some stage and the guide will be updated once it happens. Until then this is a STRICT REQUIREMENT.
 
-## Please read [NOTES](#notes)
-
 # Index
+- [BTT Eddy Dimensions and Probe Location](#btt-eddy-dimensions-and-probe-location)
 - [Compiling Firmware](#compiling-firmware)
 - [Printer Configuration](#printer-configuration)
 - - [Z Endstop](#z-endstop)
@@ -29,27 +27,31 @@ Thanks for [krautech's](https://github.com/krautech/btt-eddy-guide) contribution
 - [Extras & Notes](#extras--notes)
 - - Includes Print Start Macro Adjustment
 - [FAQ - Frequently Asked Questions](#faq---frequently-asked-questions)
+-  - [Eddy is performing Z Hops when running Bed Mesh](#eddy-is-performing-z-hops-when-running-bed-mesh)
+-  - [Which Eddy version should I use?](#which-eddy-version-should-i-use)
+-  - [My z-offset doesnt seem to save and resets, is there a work around or fix?](#my-z-offset-doesnt-seem-to-save-and-resets-is-there-a-work-around-or-fix)
 - [Known Issues](#known-issues)
 - - BTT Knomi
-
+## BTT Eddy Dimensions and Probe Location
+![Dimensions](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/dimensions.jpg?raw=true)
 ## Compiling Firmware
-1. SSH into raspberry PI
+1. SSH into raspberry PI or your host device
 2. Type
 ```
 cd ~/klipper
 make menuconfig
 ```
 3. Use these settings to compile the firmware.
-![Firmware Image](./Images/compile.png)
+![Firmware Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/compile.png?raw=true)
 4. Once set, hit 'Q' and when asked, select yes to save.
 5. Type ```make``` to compile.
 6. Disconnect power to Eddy
 7. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your Raspberry Pi
-![Boot Image](./Images/boot.png)
-8. SSH into raspberry Pi
+![Boot Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/boot.png?raw=true)
+8. SSH into host device
 9. Type ```lsusb``` into the command line. You should see eddy. 
 
-![LSUSB Image](./Images/lsusb.png)
+![LSUSB Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/lsusb.png?raw=true)
 
 10. Type  ```cd ~/klipper``` into command line
 11. Type ```make flash FLASH_DEVICE=2e8a:0003```
@@ -58,7 +60,7 @@ Remember to change 2e8a:0003 to your device ID you found in step 9
 > [!NOTE]
 > You need to change from the main branch of klipper to BTTs branch as discussed in the warning at the top of the page. This is only temporary and will be updated accordingly.
 > 
-> Still accurate as of **13-05-2024**.
+> Still accurate as of **25-05-2024**.
 13. Change to BTT klipper by entering the following via SSH
 ```
 git remote add eddy https://github.com/bigtreetech/klipper
@@ -142,7 +144,7 @@ speed: 200
 27. Home All Axes and move Z 10 above bed
 28. Set idle timeout ```SET_IDLE_TIMEOUT TIMEOUT=36000```
 29. Record ambient temp of the BTT Eddy Sensor
-![Eddy Temperature](./Images/eddy-temp.jpg)
+![Eddy Temperature](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/eddy-temp.jpg?raw=true)
 30. Set max temp for bed (i.e 100c) and set typical temperature for hotend (200c)
 31. Wait for BTT Eddy temp to stabilize then record temp.
 32. Return to room temp by turning off bed and hotend
@@ -271,6 +273,22 @@ BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan ADAPTIVE=1
 - Remove or alter KAMP - Adaptive Bed Mesh and any custom BED_MESH_CALIBRATE macros. Use klipper adaptive mesh instead or alternatively do not include KAMP/Adaptive_Meshing.cfg in your KAMP_Settings.cfg
 [Information on Adaptive Mesh Here](https://www.klipper3d.org/Bed_Mesh.html#adaptive-meshes)
 
+### Which Eddy version should I use?
+- It depends on your needs. Eddy USB and Eddy Coil are nearly identical, however Eddy Coil is more for toolhead boards and connects via I2C connectors.
+- Eddy Coil cannot be used for z-homing as a z-endstop as it doesnt feature temperature compensation.
+
+### My z-offset doesnt seem to save and resets, is there a work around or fix?
+- Currently there doesnt seem to be a proper fix however if you insert the following into your PRINT_START, CANCEL and END_PRINT macros, you can manually specify your z offset.
+> [!WARNING]
+> This can have serious consequences if you don't know what youre doing. Your nozzle can crash into the bed if you set this wrong. Please do so at YOUR OWN RISK.
+
+```
+//start print
+SET_GCODE_OFFSET Z=-0.6 #adjust value to your liking to drop your z-offset height a little more
+
+// cancel + end print
+SET_GCODE_OFFSET Z=0 #
+```
 # Known Issues
 - BTT Knomi will cause z-hops, please edit you KNOMI.CFG specifically this line.
   ```
@@ -285,9 +303,5 @@ BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan ADAPTIVE=1
   BTT_BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan
   SET_GCODE_VARIABLE MACRO=_KNOMI_STATUS VARIABLE=probing VALUE=False
   ```
-### Which Eddy version should I use?
-- It depends on your needs. Eddy USB and Eddy Coil are nearly identical, however Eddy Coil is more for toolhead boards and connects via I2C connectors.
-- Eddy Coil cannot be used for z-homing as a z-endstop as it doesnt feature temperature compensation.
-
 
 
