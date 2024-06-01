@@ -1,4 +1,4 @@
-# Installation of EDDY USB V1 - Last Updated 29th May 2025
+# Installation of EDDY USB V1 - Last Updated 29th May 2024
 
 
 > [!WARNING]  
