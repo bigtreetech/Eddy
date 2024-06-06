@@ -124,7 +124,7 @@ speed: 200
 ## 2. Live Current Calibration
 16. Place Eddy Approx. 20mm above the bed.
 17. From Mainsail or Fluidd run command  ```LDC_CALIBRATE_DRIVE_CURRENT CHIP=btt_eddy```
-18. Type ```SAVE_CONFIG``` to save the drive currant to your config
+18. Type ```SAVE_CONFIG``` to save the drive current to your config
 ## 3. Z Offset Calibration
 > [!IMPORTANT]
 > If using a printer with Quick Gantry Leveling (Voron etc) perform it now to ensure the gantry is level and to prevent the nozzle rubbing into the bed.
