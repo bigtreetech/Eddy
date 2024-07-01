@@ -41,6 +41,7 @@
 > Still accurate as of **29th May 2025**.
 1. Change to BTT klipper by entering the following via SSH
 ```
+cd ~/klipper
 git remote add eddy https://github.com/bigtreetech/klipper
 git fetch eddy
 git checkout eddy/eddy
