@@ -290,7 +290,7 @@ SET_GCODE_OFFSET Z=-0.6 #adjust value to your liking to drop your z-offset heigh
 SET_GCODE_OFFSET Z=0 #
 ```
 # Known Issues
-- BTT Knomi will cause z-hops, please edit you KNOMI.CFG specifically this line.
+- BTT Knomi will cause z-hops, please edit your KNOMI.CFG specifically this line.
   ```
   SET_GCODE_VARIABLE MACRO=_KNOMI_STATUS VARIABLE=probing VALUE=True
   BTT_BED_MESH_CALIBRATE
