@@ -1,4 +1,4 @@
-# Installation of EDDY USB V1 - Last Updated 25th May 2024
+# Installation of EDDY USB V1 - Last Updated 29th May 2024
 
 
 > [!WARNING]  
@@ -35,6 +35,9 @@
 ## BTT Eddy Dimensions and Probe Location
 ![Dimensions](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/dimensions.jpg?raw=true)
 ## Compiling Firmware
+> [!IMPORTANT]
+> Please make sure you're MCU/devices are UP-TO-DATE with the latest versions of klipper firmware before attempting this. If you don't you may have issues with firmware errors. If in doubt, a clean install of klipper firmware on your devices can help limit any potential issues.
+> 
 1. SSH into raspberry PI or your host device
 2. Type
 ```
@@ -60,7 +63,7 @@ Remember to change 2e8a:0003 to your device ID you found in step 9
 > [!NOTE]
 > You need to change from the main branch of klipper to BTTs branch as discussed in the warning at the top of the page. This is only temporary and will be updated accordingly.
 > 
-> Still accurate as of **25-05-2024**.
+> Still accurate as of **29th May 2025**.
 13. Change to BTT klipper by entering the following via SSH
 ```
 git remote add eddy https://github.com/bigtreetech/klipper
