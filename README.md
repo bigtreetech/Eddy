@@ -36,40 +36,40 @@
 ![Dimensions](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/dimensions.jpg?raw=true)
 ## Compiling Firmware
 > [!IMPORTANT]
-> Please make sure you're MCU/devices are UP-TO-DATE with the latest versions of klipper firmware before attempting this. If you don't you may have issues with firmware errors. If in doubt, a clean install of klipper firmware on your devices can help limit any potential issues.
-> 
-1. SSH into raspberry PI or your host device
-2. Type
-```
-cd ~/klipper
-make menuconfig
-```
-3. Use these settings to compile the firmware.
-![Firmware Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/compile.png?raw=true)
-4. Once set, hit 'Q' and when asked, select yes to save.
-5. Type ```make``` to compile.
-6. Disconnect power to Eddy
-7. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your Raspberry Pi
-![Boot Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/boot.png?raw=true)
-8. SSH into host device
-9. Type ```lsusb``` into the command line. You should see eddy. 
-
-![LSUSB Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/lsusb.png?raw=true)
-
-10. Type  ```cd ~/klipper``` into command line
-11. Type ```make flash FLASH_DEVICE=2e8a:0003```
-Remember to change 2e8a:0003 to your device ID you found in step 9
-12. Type  ```ls /dev/serial/by-id/*```  into the command line. The found device will be what you enter into your klipper config under [mcu eddy] for the Serial variable.
-> [!NOTE]
-> You need to change from the main branch of klipper to BTTs branch as discussed in the warning at the top of the page. This is only temporary and will be updated accordingly.
+> After changing to the BTT specific branch of Klipper, you should update all of your device firmware such that it is compiled using this branch. This applies to motherboard and toolboards that may be connected to your system. Soon, the BTT branch will be merged with mainline klipper and at that point, you will be able to run mainline on all devices. We recommend ensuring that all other devices are updated before proceeding with this guide.
 > 
 > Still accurate as of **29th May 2025**.
-13. Change to BTT klipper by entering the following via SSH
+1. Change to BTT klipper by entering the following via SSH
 ```
 git remote add eddy https://github.com/bigtreetech/klipper
 git fetch eddy
 git checkout eddy/eddy
 ```
+> 
+2. SSH into raspberry PI or your host device
+3. Type
+```
+cd ~/klipper
+make menuconfig
+```
+4. Use these settings to compile the firmware.
+![Firmware Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/compile.png?raw=true)
+5. Once set, hit 'Q' and when asked, select yes to save.
+6. Type ```make``` to compile.
+7. Disconnect power to Eddy
+8. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your Raspberry Pi
+![Boot Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/boot.png?raw=true)
+9. SSH into host device
+10. Type ```lsusb``` into the command line. You should see eddy. 
+
+![LSUSB Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/lsusb.png?raw=true)
+
+11. Type  ```cd ~/klipper``` into command line
+12. Type ```make flash FLASH_DEVICE=2e8a:0003```
+Remember to change 2e8a:0003 to your device ID you found in step 9
+13. Type  ```ls /dev/serial/by-id/*```  into the command line. The found device will be what you enter into your klipper config under [mcu eddy] for the Serial variable.
+> [!NOTE]
+
 14. Type into command line ```sudo reboot```
 
 ## Printer Configuration
