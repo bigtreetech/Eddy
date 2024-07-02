@@ -1,4 +1,4 @@
-# Installation of EDDY USB V1 - Last Updated 29th May 2024
+# Installation of EDDY USB V1 - Last Updated 02 July 2024
 
 
 > [!WARNING]  
@@ -7,9 +7,9 @@
 > Instead KAMP has been integrated into klipper as of January 2024 and you should use the ADAPTIVE=1 option in your BED_MESH_CALIBRATION calls. You can find more [Information on Adaptive Mesh Here](https://www.klipper3d.org/Bed_Mesh.html#adaptive-meshes)
 
 > [!WARNING]
-> As it stands, Eddy requires the use of BTT's fork of klipper found [HERE](https://github.com/bigtreetech/klipper). This is included in the guide under steps 13.
+> As it stands, Eddy requires the use of BTT's fork of klipper found [HERE](https://github.com/bigtreetech/klipper). This is included in the guide as the first step.
 > 
-> This will be merged into mainline klipper at some stage and the guide will be updated once it happens. Until then this is a STRICT REQUIREMENT.
+> The pull request to merge this into mainline klipper has been made and it should be integrated shortly. Until then this is a STRICT REQUIREMENT.
 
 # Index
 - [BTT Eddy Dimensions and Probe Location](#btt-eddy-dimensions-and-probe-location)
@@ -32,13 +32,17 @@
 -  - [My z-offset doesnt seem to save and resets, is there a work around or fix?](#my-z-offset-doesnt-seem-to-save-and-resets-is-there-a-work-around-or-fix)
 - [Known Issues](#known-issues)
 - - BTT Knomi
+
+## Video Tutorial
+For a video tutorial covering many of the points below, please watch the [video located here](https://drive.google.com/file/d/1uXiymZxoWhvRIwTwojOh0fGKmjitoytf/view?usp=sharing)
+
 ## BTT Eddy Dimensions and Probe Location
 ![Dimensions](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/dimensions.jpg?raw=true)
 ## Compiling Firmware
 > [!IMPORTANT]
 > After changing to the BTT specific branch of Klipper, you should update all of your device firmware such that it is compiled using this branch. This applies to motherboard and toolboards that may be connected to your system. Soon, the BTT branch will be merged with mainline klipper and at that point, you will be able to run mainline on all devices. We recommend ensuring that all other devices are updated before proceeding with this guide.
 > 
-> Still accurate as of **29th May 2025**.
+> Still accurate as of **02 July 2024**.
 1. Change to BTT klipper by entering the following via SSH
 ```
 cd ~/klipper
@@ -76,11 +80,14 @@ Remember to change 2e8a:0003 to your device ID you found in step 9
 ## Printer Configuration
 > [!IMPORTANT]
 > ### Z Endstop
-> If you want to enable Z-Homing/Endstop, under your [stepper_z] in printer.cfg change ```endstop_pin: PA5``` to ```endstop_pin: probe:z_virtual_endstop``` and comment out or remove ```position_endstop: 0```
+> You can use the Eddy as the z endstop or you can use another device as an endstop. If you decide to use another device as an endstop then set up your homing and endstop according to that device.
+> If you want to enable Z-Homing/Endstop for the eddy do the following things:
+> 1. Under your [stepper_z] in printer.cfg change ```endstop_pin: PA5``` to ```endstop_pin: probe:z_virtual_endstop``` and comment out or remove ```position_endstop: 0```
+> 2. Uncomment the ```SET_Z_FROM_PROBE``` and ```G28``` macro definitions from the sample configuration file. Take note that if you are using a KNOMI then there is no need to have two instances of the G28 macro definition.
 > 
 15. Add the following to your printer.cfg making sure to adjust for your bed size and probe position
 > [!IMPORTANT]
-> Adjust your **x_offset** and **y_offset** to match your probe position relative to your nozzle. You can do that following these steps found [HERE](https://www.klipper3d.org/Probe_Calibrate.html)
+> Adjust your **x_offset** and **y_offset** to match your probe position relative to your nozzle. You can do that following these steps found [HERE](https://www.klipper3d.org/Probe_Calibrate.html) Common settings are included within the sample config file.
 
 ```
 [mcu eddy]
@@ -271,6 +278,9 @@ BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan ADAPTIVE=1
 
 # FAQ - Frequently Asked Questions
 
+### Sometimes I get a "Probe Triggered Before Movement" Error
+- This will happen when you try to execute two successive ```PROBE``` commands. Always raise the gantry by a few mm between ```PROBE``` commands to avoid this.
+
 ### Eddy is performing Z Hops when running Bed Mesh
 - Make sure you are using the correct macro call.
 ```BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan```
@@ -279,22 +289,19 @@ BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan ADAPTIVE=1
 
 ### Which Eddy version should I use?
 - It depends on your needs. Eddy USB and Eddy Coil are nearly identical, however Eddy Coil is more for toolhead boards and connects via I2C connectors.
-- Eddy Coil cannot be used for z-homing as a z-endstop as it doesnt feature temperature compensation.
+- Eddy Coil does not have temperature compensation and so it may be less reliable for homing if you are using it within a sealed chamber..
 
 ### My z-offset doesnt seem to save and resets, is there a work around or fix?
-- Currently there doesnt seem to be a proper fix however if you insert the following into your PRINT_START, CANCEL and END_PRINT macros, you can manually specify your z offset.
+- Coming from a standard probe, this may seem like a bug. However if you have calibrated the Eddy correctly and are using the special homing macros, then there will be no need for a z-offset. Explaining why is a bit long winded but essentially when it comes to an Eddy, the z-offset parameter does not adjust the height at which the nozzle prints, it just adjusts the height at which homing or probing triggers. At some point we will write a detailed guide of why for the enquiring mind to explore.
+- Nevertheless, if you find that your nozzle is printing too low or too high and you don't feel like recalibrating the probe you can make adjustments to the height that the nozzle will print at by adjusting the line within the ```SET_Z_FROM_PROBE``` macro as shown below. Note that ```XX``` should be replaced with the value that you want to drop the nozzle by (change sign to positive to raise the height of the nozzle). Be safe, start small if you want to change it and work up. Still, we always recommend just running the ```PROBE_EDDY_CURRENT_CALIBRATE CHIP=btt_eddy ``` calibration procedure again instead of doing this. It is quick and easy.
 > [!WARNING]
 > This can have serious consequences if you don't know what youre doing. Your nozzle can crash into the bed if you set this wrong. Please do so at YOUR OWN RISK.
 
 ```
-//start print
-SET_GCODE_OFFSET Z=-0.6 #adjust value to your liking to drop your z-offset height a little more
-
-// cancel + end print
-SET_GCODE_OFFSET Z=0 #
+SET_GCODE_OFFSET Z={printer.probe.last_z_result - cf['probe_eddy_current btt_eddy'].z_offset - 0.XX}
 ```
 # Known Issues
-- BTT Knomi will cause z-hops, please edit your KNOMI.CFG specifically this line.
+- BTT Knomi will cause z-hops during a scan. If you are using the Eddy as an endstop then simply comment out the G28 macro in KNOMI.CFG and use the macro from the sample Eddy config. If you are using another device as an endstop then modify your G28 macro in the KNOMI.cfg, specifically this line.
   ```
   SET_GCODE_VARIABLE MACRO=_KNOMI_STATUS VARIABLE=probing VALUE=True
   BTT_BED_MESH_CALIBRATE
