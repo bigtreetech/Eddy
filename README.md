@@ -36,6 +36,13 @@ For a video tutorial covering many of the points below, please watch the [video 
 
 ## BTT Eddy Dimensions and Probe Location
 The dimensions below will help you to understand where the center of the coil is when measuring the X and Y offsets from point 15.
+
+> [!TIP]
+> When installing the Eddy (USB version), try to avoid running the cable alongside other cables that are very electrically noisy such as stepper motor cables. If you must run it alongside such cables then do your best to separate the two. Additionally, if you are handy with a crimping tool and have additional crimps, it is also a good idea to trim the cable down to the needed length by trimming the end that connects to the Eddy. This is non-essential and should only be attempted by those who are confident that they can carry the task out without error. If there is slack remaining in the cable, do not wind it in a coil, rather wind it in a figure of 8.
+
+> [!TIP]
+> For detailed wiring and mounting instructions for both the Eddy and Eddy Coil, please refer to the PDF manual. This guide picks up assuming that you have completed the physical installation.
+
 > [!IMPORTANT]
 > Some people confuse the current calibration height of 20mm with the mounting height of 2mm. Be sure to mount the Eddy so that the base sits a maximum of 2mm above the nozzle. The 20mm height is only used when calibrating the coil current later in this guide.
 
