@@ -20,14 +20,11 @@
 - [Mapping Eddy Readings To Nozzle Heights](#3-mapping-eddy-readings-to-nozzle-heights)
 - [Bed Mesh Calibration](#4-bed-mesh-calibration)
 - [Temperature Compensation Calibration](#5-temperature-compensation-calibration-eddy-usb-only)
->
 - [Bed Mesh Calibration Parameters](#bed-mesh-calibrate-parameters)
 - [Bed Mesh Scan Height](#bed-mesh-scan-height)
 - [Bed Mesh Rapid Scanning](#rapid-continuous-scanning)
-- [Extras & Notes](#extras--notes)
-- - Includes Print Start Macro Adjustment
 - [FAQ - Frequently Asked Questions](#faq---frequently-asked-questions)
--  - [Sometimes I get a "Probe Triggered Before Movement" Error](#sometimes-i-get-a-"probe-triggered-before-movement"-error)
+-  - [Sometimes I get a "Probe Triggered Before Movement" Error](#sometimes-i-get-a-probe-triggered-before-movement-error)
 -  - [Eddy is performing Z Hops when running Bed Mesh](#eddy-is-performing-z-hops-when-running-bed-mesh)
 -  - [Which Eddy version should I use?](#which-eddy-version-should-i-use)
 -  - [My z-offset doesnt seem to save and resets, is there a work around or fix?](#my-z-offset-doesnt-seem-to-save-and-resets-is-there-a-work-around-or-fix)
@@ -70,7 +67,7 @@ make menuconfig
 6. Type ```make``` to compile.
 7. Disconnect power to Eddy
 8. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your Raspberry Pi
-![Boot Image](https://github.com/bigtreetech/Eddy/blob/master/Images/boot.pngraw=true)
+![Boot Image](https://github.com/bigtreetech/Eddy/blob/master/Images/boot.png?raw=true)
 9. SSH into host device
 10. Type ```lsusb``` into the command line. You should see eddy. 
 
