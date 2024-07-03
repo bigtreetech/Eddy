@@ -16,8 +16,8 @@
 - [Compiling Firmware](#compiling-firmware)
 - [Printer Configuration](#printer-configuration)
 - - [Z Endstop](#z-endstop)
-- [Live Current Calibration](#2-live-current-calibration)
-- [Z-Offset Calibration](#3-z-offset-calibration)
+- [Drive Current Calibration](#2-drive-current-calibration)
+- [Mapping Eddy Readings To Nozzle Heights](#3-mapping-eddy-readings-to-nozzle-heights)
 - [Bed Mesh Calibration](#4-bed-mesh-calibration)
 - [Temperature Compensation Calibration](#5-temperature-compensation-calibration-eddy-usb-only)
 >
@@ -27,6 +27,7 @@
 - [Extras & Notes](#extras--notes)
 - - Includes Print Start Macro Adjustment
 - [FAQ - Frequently Asked Questions](#faq---frequently-asked-questions)
+-  - [Sometimes I get a "Probe Triggered Before Movement" Error](#sometimes-i-get-a-"probe-triggered-before-movement"-error)
 -  - [Eddy is performing Z Hops when running Bed Mesh](#eddy-is-performing-z-hops-when-running-bed-mesh)
 -  - [Which Eddy version should I use?](#which-eddy-version-should-i-use)
 -  - [My z-offset doesnt seem to save and resets, is there a work around or fix?](#my-z-offset-doesnt-seem-to-save-and-resets-is-there-a-work-around-or-fix)
@@ -41,7 +42,7 @@ The dimensions below will help you to understand where the center of the coil is
 > [!IMPORTANT]
 > Some people confuse the current calibration height of 20mm with the mounting height of 2mm. Be sure to mount the Eddy so that the base sits a maximum of 2mm above the nozzle. The 20mm height is only used when calibrating the coil current later in this guide.
 
-![Dimensions](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/dimensions.jpg?raw=true)
+![Dimensions](https://github.com/bigtreetech/Eddy/blob/master/Images/dimensions.jpg?raw=true)
 ## Compiling Firmware
 > [!IMPORTANT]
 > The firmware compilation instructions below only apply to the Eddy USB. If you are using an Eddy Coil then you will have it connected to the I2C port on a toolboard. You will need to compile firmware for that toolboard using the BIGTREETECH branch and then install it onto that toolboard. When configuring the Eddy within Klipper you will just need to specify that it communicates using the I2C port on that toolboard which will depend on the pins for that board.
@@ -64,16 +65,16 @@ cd ~/klipper
 make menuconfig
 ```
 4. Use these settings to compile the firmware.
-![Firmware Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/compile.png?raw=true)
+![Firmware Image](https://github.com/bigtreetech/Eddy/blob/master/Images/compile.png?raw=true)
 5. Once set, hit 'Q' and when asked, select yes to save.
 6. Type ```make``` to compile.
 7. Disconnect power to Eddy
 8. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your Raspberry Pi
-![Boot Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/boot.png?raw=true)
+![Boot Image](https://github.com/bigtreetech/Eddy/blob/master/Images/boot.pngraw=true)
 9. SSH into host device
 10. Type ```lsusb``` into the command line. You should see eddy. 
 
-![LSUSB Image](https://github.com/krautech/btt-eddy-guide/blob/main/images/eddy-pi/lsusb.png?raw=true)
+![LSUSB Image](https://github.com/bigtreetech/Eddy/blob/master/Images/lsusb.png?raw=true)
 
 11. Type  ```cd ~/klipper``` into command line
 12. Type ```make flash FLASH_DEVICE=2e8a:0003```
