@@ -89,58 +89,21 @@ Remember to change 2e8a:0003 to your device ID you found in step 9
 > You can use the Eddy as the z endstop or you can use another device as an endstop. If you decide to use another device as an endstop then set up your homing and endstop according to that device.
 > If you want to enable Z-Homing/Endstop for the eddy do the following things:
 > 1. Under your [stepper_z] in printer.cfg change ```endstop_pin: PA5``` to ```endstop_pin: probe:z_virtual_endstop``` and comment out or remove ```position_endstop: 0```. Note that your current endstop may not be PA5 so just look for the line that matches your current endstop and comment it out.
-> 2. Uncomment the ```SET_Z_FROM_PROBE``` and ```G28``` macro definitions from the sample configuration file. Take note that if you are using a KNOMI then there is no need to have two instances of the G28 macro definition and you can remove the one from the KNOMI.cfg file.
+> 2. Ensure that you have the ```SET_Z_FROM_PROBE``` and ```G28``` macro definitions from the [sample configuration file](https://github.com/bigtreetech/Eddy/blob/master/sample-bigtreetech-eddy.cfg) included into your printer configuration file. Take note that if you are using a KNOMI then there is no need to have two instances of the G28 macro definition and you can remove the one from the KNOMI.cfg file.
 > 
-15. Add the following to your printer.cfg making sure to adjust for your bed size and probe position
+15. Add the rest of the contents of the [sample configuration file](https://github.com/bigtreetech/Eddy/blob/master/sample-bigtreetech-eddy.cfg) to your printer.cfg. Please pay close attention to the guidelines and comments within the sample configuration file. They will help you to understand which macros to use and how to calculate some of the important values for your printer.
 > [!IMPORTANT]
-> Adjust your **x_offset** and **y_offset** to match your probe position relative to your nozzle. You can do that following these steps found [HERE](https://www.klipper3d.org/Probe_Calibrate.html) Common settings are included within the sample config file.
+> The sample configuration requires you to adjust the **x_offset** and **y_offset** to match your probe position relative to your nozzle. You can do that by following these steps found [HERE](https://www.klipper3d.org/Probe_Calibrate.html) and also by using the images at the top of this guide which show the center location of the Eddy coil. Common settings are included within the sample config file.
 
-```
-[mcu eddy]
-serial: /dev/serial/by-id/usb-Klipper_rp2040_4550357129142D58-if00
-
-[temperature_sensor btt_eddy_mcu]
-sensor_type: temperature_mcu
-sensor_mcu: eddy
-min_temp: 10
-max_temp: 100
-
-[probe_eddy_current btt_eddy]
-sensor_type: ldc1612
-z_offset: 1.0
-#i2c_address:
-i2c_mcu: eddy
-i2c_bus: i2c0f
-x_offset: 0 # Set according to the actual offset relative to the nozzle
-y_offset: 20 # Set according to the actual offset relative to the nozzle
-data_rate: 500
-
-[temperature_probe btt_eddy]
-sensor_type: Generic 3950
-sensor_pin: eddy:gpio26
-horizontal_move_z: 2
-
-[bed_mesh]
-horizontal_move_z: 2
-speed: 300
-mesh_min: 10, 10
-mesh_max: 220, 220
-probe_count: 9, 9
-algorithm: bicubic
-
-
-[safe_z_home]
-home_xy_position: 125, 125
-z_hop: 10
-z_hop_speed: 25
-speed: 200
-```
 ## 2. Drive Current Calibration
 16. Place Eddy Approx. 20mm above the bed.
 17. From Mainsail or Fluidd run command  ```LDC_CALIBRATE_DRIVE_CURRENT CHIP=btt_eddy```
 18. Type ```SAVE_CONFIG``` to save the drive current to your config
 ## 3. Mapping Eddy Readings To Nozzle Heights
 Now that the drive current has been calibrated, the Eddy will be able to obtain readings from the print bed. Klipper needs to know how those readings correspond to the height of the nozzle. The following calibration procedure positions the nozzle on the bed so that the z height is = 0. It then takes readings from the Eddy as it gradually increases the nozzle height so that it can map those readings to known heights. Follow the steps below to perform this essential calibration.
+
+> [!TIP]
+> If you ever find that the nozzle is sitting either too high or too low when it is supposed to be at z=0 then performing this quick calibration again will likely solve your issue. There is no need to set a z-offset. Movement of the probe relative to the nozzle through maintenance may result in the need for this calibration.
  
 19. Home X and Y axes with command ```G28 X Y```
 20. Make sure you dont have a bed heightmap loaded. Send ```BED_MESH_CLEAR``` from the console to clear the heightmap.
