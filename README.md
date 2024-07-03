@@ -55,7 +55,7 @@ git fetch eddy
 git checkout eddy/eddy
 ```
 > 
-2. SSH into raspberry PI or your host device
+2. SSH into BIGTREETECH PI or your host device
 3. Type
 ```
 cd ~/klipper
@@ -66,7 +66,7 @@ make menuconfig
 5. Once set, hit 'Q' and when asked, select yes to save.
 6. Type ```make``` to compile.
 7. Disconnect power to Eddy
-8. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your Raspberry Pi
+8. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your BIGTREETECH Pi
 ![Boot Image](https://github.com/bigtreetech/Eddy/blob/master/Images/boot.png?raw=true)
 9. SSH into host device
 10. Type ```lsusb``` into the command line. You should see eddy. 
