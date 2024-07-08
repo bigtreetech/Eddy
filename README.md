@@ -1,4 +1,4 @@
-# Installation of EDDY USB V1 - Last Updated 02 July 2024
+# Installation of EDDY USB V1 - Last Updated 08 July 2024
 
 > [!WARNING]  
 > [KAMP aka Klipper-Adaptive-Meshing-Purging](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) should be removed from your klipper prior to using Eddy. Please comment out the include line. ie `#[include ./KAMP/adaptive_meshing.cfg]` from your KAMP_SETTINGS.cfg
@@ -108,7 +108,7 @@ make menuconfig
 > 1. Under your [stepper_z] in printer.cfg change `endstop_pin: PA5` to `endstop_pin: probe:z_virtual_endstop` and comment out or remove `position_endstop: 0`. Note that your current endstop may not be PA5 so just look for the line that matches your current endstop and comment it out.
 > 2. Ensure that you have the `SET_Z_FROM_PROBE` and `G28` macro definitions from the [sample configuration file](https://github.com/bigtreetech/Eddy/blob/master/sample-bigtreetech-eddy.cfg) included into your printer configuration file. Take note that if you are using a KNOMI then there is no need to have two instances of the G28 macro definition and you can remove the one from the KNOMI.cfg file.
 >
-> 3. Add the rest of the contents of the [sample configuration file](https://github.com/bigtreetech/Eddy/blob/master/sample-bigtreetech-eddy.cfg) to your printer.cfg. Please pay close attention to the guidelines and comments within the sample configuration file. They will help you to understand which macros to use and how to calculate some of the important values for your printer.
+> 3. Add the rest of the contents of the [sample configuration file](https://github.com/bigtreetech/Eddy/blob/master/sample-bigtreetech-eddy.cfg) to your printer.cfg. **Please pay close attention to the guidelines and comments within the sample configuration file. They will help you to understand which macros to use/uncomment and how to calculate some of the important values for your printer.**
 >    [!IMPORTANT]
 >    The sample configuration requires you to adjust the **x_offset** and **y_offset** to match your probe position relative to your nozzle. You can do that by following these steps found [HERE](https://www.klipper3d.org/Probe_Calibrate.html) and also by using the images at the top of this guide which show the center location of the Eddy coil. Common settings are included within the sample config file.
 
@@ -229,13 +229,7 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 ### My z-offset doesnt seem to save and resets, is there a work around or fix?
 
 - Coming from a standard probe, this may seem like a bug. However if you have calibrated the Eddy correctly and are using the special homing macros, then there will be no need for a z-offset. Explaining why is a bit long winded but essentially when it comes to an Eddy, the z-offset parameter does not adjust the height at which the nozzle prints, it just adjusts the height at which homing or probing triggers. If you have a mind that enjoys understanding things at a deeper level then here is a writeup to give you something to chew on: [Z-Offsets with Eddy Current Probes](https://gist.github.com/bigtreetech/484380b26be613b9139bc537510393df)
-- Nevertheless, if you find that your nozzle is printing too low or too high and you don't feel like recalibrating the probe you can make adjustments to the height that the nozzle will print at by adjusting the line within the `SET_Z_FROM_PROBE` macro as shown below. Note that `XX` should be replaced with the value that you want to drop the nozzle by (change sign to positive to raise the height of the nozzle). Be safe, start small if you want to change it and work up. Still, we always recommend just running the `PROBE_EDDY_CURRENT_CALIBRATE CHIP=btt_eddy ` calibration procedure again instead of doing this. It is quick and easy.
-  > [!WARNING]
-  > This can have serious consequences if you don't know what youre doing. Your nozzle can crash into the bed if you set this wrong. Please do so at YOUR OWN RISK.
-
-```
-SET_GCODE_OFFSET Z={printer.probe.last_z_result - cf['probe_eddy_current btt_eddy'].z_offset - 0.XX}
-```
+- While we strongly recommend simply performing the Eddy probe calibration in order to get a nozzle height that is just right, you can still simulate a standard z-offset by uncommenting certain macros in the sample configuration file. Simply uncomment any macro that is related to the beta z-offset functionality and you will be able to use the standard mainsail buttons to raise/lower then nozzle and save that height as a z-offset.
 
 # Known Issues
 
