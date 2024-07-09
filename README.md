@@ -15,20 +15,22 @@
 - [BTT Eddy Dimensions and Probe Location](#btt-eddy-dimensions-and-probe-location)
 - [Compiling Firmware](#compiling-firmware)
 - [Printer Configuration](#printer-configuration)
+- - [Selecting the right config file for your needs](#selecting-the-right-config-file-for-your-needs)
 - - [Z Endstop](#z-endstop)
 - [Drive Current Calibration](#2-drive-current-calibration)
 - [Mapping Eddy Readings To Nozzle Heights](#3-mapping-eddy-readings-to-nozzle-heights)
 - [Bed Mesh Calibration](#4-bed-mesh-calibration)
 - [Temperature Compensation Calibration](#5-temperature-compensation-calibration-eddy-usb-only)
-- [Bed Mesh Calibration Parameters](#bed-mesh-calibrate-parameters)
-- [Bed Mesh Scan Height](#bed-mesh-scan-height)
-- [Bed Mesh Rapid Scanning](#rapid-continuous-scanning)
+- [Extra Info](#extra-info)
+- - [Bed Mesh Calibration Parameters](#bed-mesh-calibrate-parameters)
+- - [Bed Mesh Scan Height](#bed-mesh-scan-height)
+- - [Bed Mesh Rapid Scanning](#rapid-continuous-scanning)
 - [FAQ - Frequently Asked Questions](#faq---frequently-asked-questions)
 - - [Sometimes I get a "Probe Triggered Before Movement" Error](#sometimes-i-get-a-probe-triggered-before-movement-error)
 - - [Eddy is performing Z Hops when running Bed Mesh](#eddy-is-performing-z-hops-when-running-bed-mesh)
 - - [Which Eddy version should I use?](#which-eddy-version-should-i-use)
 - - [My z-offset doesnt seem to save and resets, is there a work around or fix?](#my-z-offset-doesnt-seem-to-save-and-resets-is-there-a-work-around-or-fix)
-- [Known Issues](#known-issues)
+- - [My Eddy Macros Conflict With My KNOMI Macros](#my-eddy-macros-conflict-with-my-knomi-macros)
 
 ## Video Tutorial
 
@@ -36,16 +38,18 @@ For a video tutorial covering many of the points below, please watch the [video 
 
 ## BTT Eddy Dimensions and Probe Location
 
-The dimensions below will help you to understand where the center of the coil is when measuring the X and Y offsets from point 15.
+The Eddy has been designed to mount onto a standard Voron X carriage where the Omron inductive probe would usually mount. Additional mounts are provided for common printers [within the 3D folder of this repo.](https://github.com/bigtreetech/Eddy/tree/master/3D/EDDY_PRINT_PARTS) For detailed wiring and mounting instructions for both the Eddy and Eddy Coil, please refer to the PDF manual.
+
+> [!IMPORTANT]
+> When mounting the Eddy, always ensure that the rear (where the electronic components are located) is situated further away from the hotend than the front.
 
 > [!TIP]
 > When installing the Eddy (USB version), try to avoid running the cable alongside other cables that are very electrically noisy such as stepper motor cables. If you must run it alongside such cables then do your best to separate the two. Additionally, if you are handy with a crimping tool and have additional crimps, it is also a good idea to trim the cable down to the needed length by trimming the end that connects to the Eddy. This is non-essential and should only be attempted by those who are confident that they can carry the task out without error. If there is slack remaining in the cable, do not wind it in a coil, rather wind it in a figure of 8.
 
-> [!TIP]
-> For detailed wiring and mounting instructions for both the Eddy and Eddy Coil, please refer to the PDF manual. This guide picks up assuming that you have completed the physical installation.
-
 > [!IMPORTANT]
 > Some people confuse the current calibration height of 20mm with the mounting height of 2mm. Be sure to mount the Eddy so that the base sits a maximum of 2mm above the nozzle. The 20mm height is only used when calibrating the coil current later in this guide.
+
+The dimensions below will help you to understand where the center of the coil is when measuring the X and Y offsets from point 15.
 
 ![Dimensions](https://github.com/bigtreetech/Eddy/blob/master/Images/dimensions.jpg?raw=true)
 
@@ -100,19 +104,37 @@ make menuconfig
 
 > [!IMPORTANT]
 >
+> ### Selecting the right config file for your needs
+>
+> Now that you have the right firmware loaded onto your device, it is time to complete the Klipper configuration. BIGTREETECH provides three different sample configuration files to get you going. You will need to decide which one suits your needs the best. Choose the file that works best for you based on the criteria below. Read the comments in the selected configuration file carefully as they will help you to understand how to modify certain parameters to your installation.
+>
+> - You wish to use the Eddy as a probe but will use another device as the z-endstop - [Use this config with no homing](sample-bigtreetech-eddy.cfg)
+> - You wish to use the Eddy as a probe AND as the z-endstop - [Use this config which includes homing](sample-bigtreetech-eddy-homing.cfg)
+> - You wish to use the Eddy as a probe AND as the z-endstop and would like to use the beta z-offset functionality - [Use this config which includes homing and z-offset](sample-bigtreetech-eddy-zoffbeta.cfg)
+>
 > ### Z Endstop
 >
-> You can use the Eddy as the z endstop or you can use another device as an endstop. If you decide to use another device as an endstop then set up your homing and endstop according to that device.
+> As mentioned in the paragraph above, you can use the Eddy as the z endstop or you can use another device as an endstop. If you decide to use another device as an endstop then set up your homing and endstop according to that device.
+>
 > If you want to enable Z-Homing/Endstop for the eddy do the following things:
 >
-> 1. Under your [stepper_z] in printer.cfg change `endstop_pin: PA5` to `endstop_pin: probe:z_virtual_endstop` and comment out or remove `position_endstop: 0`. Note that your current endstop may not be PA5 so just look for the line that matches your current endstop and comment it out.
-> 2. Ensure that you have the `SET_Z_FROM_PROBE` and `G28` macro definitions from the [sample configuration file](https://github.com/bigtreetech/Eddy/blob/master/sample-bigtreetech-eddy.cfg) included into your printer configuration file. Take note that if you are using a KNOMI then there is no need to have two instances of the G28 macro definition and you can remove the one from the KNOMI.cfg file.
+> 1. Under your [stepper_z] in printer.cfg change `endstop_pin: PA5` to `endstop_pin: probe:z_virtual_endstop` and comment out or remove `position_endstop: 0`. Note that your current endstop may not be PA5 so just look for the line that matches your current endstop and change it.
 >
-> 3. Add the rest of the contents of the [sample configuration file](https://github.com/bigtreetech/Eddy/blob/master/sample-bigtreetech-eddy.cfg) to your printer.cfg. **Please pay close attention to the guidelines and comments within the sample configuration file. They will help you to understand which macros to use/uncomment and how to calculate some of the important values for your printer.**
->    [!IMPORTANT]
->    The sample configuration requires you to adjust the **x_offset** and **y_offset** to match your probe position relative to your nozzle. You can do that by following these steps found [HERE](https://www.klipper3d.org/Probe_Calibrate.html) and also by using the images at the top of this guide which show the center location of the Eddy coil. Common settings are included within the sample config file.
+> 2. Ensure that you have selected the correct sample configuration file and that the entire contents of that file have been copied into your `printer.cfg file`. Take note that if you are using a KNOMI then there may be some macros that conflict with the macros in the KNOMI.cfg file. To resolve the conflicts, comment out the macros in the KNOMI.cfg file and uncomment the lines from the Eddy macros that deal with KNOMI functionality.
+>
+> 3. Edit the parts of the config file that are unique to your setup. These may be things like those in the list below. Follow the comments in the config file to help you to edit the values so that they work best with your setup.
+>
+> - MCU serial
+> - X offset and Y offset
+> - Mesh_min and mesh_max
+> - Home_xy_position
+
+> [!IMPORTANT]
+> The sample configuration requires you to adjust the **x_offset** and **y_offset** to match your probe position relative to your nozzle. You can do that by following these steps found [HERE](https://www.klipper3d.org/Probe_Calibrate.html) and also by using the images at the top of this guide which show the center location of the Eddy coil. The settings for the standard Voron X carriage mount are included in all sample configuration files.
 
 ## 2. Drive Current Calibration
+
+With the firmware and configuration done, you are now ready to begin the probe calibration.
 
 16. Place Eddy Approx. 20mm above the bed. If you plan to use the Eddy as an endstop then you will not yet be able to home with it and you will need to manually move the gantry or bed such that the Eddy is 20mm above the bed.
 17. From Mainsail or Fluidd run the command `LDC_CALIBRATE_DRIVE_CURRENT CHIP=btt_eddy`
@@ -155,7 +177,7 @@ Now that the drive current has been calibrated, the Eddy will be able to obtain 
 
 ## 5. Temperature Compensation Calibration (Eddy USB ONLY)
 
-> [!CAUTION]
+> [!TIP]
 > The following steps (30-38) are for Eddy USB Only. Eddy Coil doesnt have temperature compensation so these steps should be disregarded.
 
 30. Home All Axes and move Z 5 mm above the bed by typing `G0 Z5` or using the movement UI.
@@ -182,13 +204,30 @@ Now that the drive current has been calibrated, the Eddy will be able to obtain 
 
 38. Youre all done and your Eddy will now give you a beautiful first layer across a wide temperature range! :)
 
-# Bed Mesh Calibrate Parameters
+# Extra Info
+
+## Z-Offset
+
+> [!TIP]
+> This section only applies to those who are using the Eddy for homing.
+
+The Eddy should not need the use of a z-offset since it is calibrated to understand where `z=0` is. Nevertheless, if you would like to use a z-offset then you should use the [sample config file that includes z-offset functionality.](sample-bigtreetech-eddy-zoffbeta.cfg)
+
+To determine the correct Z-offset, follow the steps below.
+
+- Home your printer.
+- Place a piece of paper beneath the nozzle.
+- Use mainsail or fluidd to set the z height to `z=0`. DO NOT babystep to get the nozzle to `z=0`! Set it as the z-axis height.
+- After setting the z-axis height to `z=0` check if the pinch on your paper is just right. If not, then use babystepping to go up or down.
+- After babystepping to the correct height, save the adjustment using the button on the mainsail or fluidd UI.
+
+## Bed Mesh Calibrate Parameters
 
 The Eddy allows you to perform a very rapid bed mesh scan before each print to ensure that you get the best first layer possible. To do this, we recommend replacing the standard BED_MESH_CALIBRATE macro with our modified version from the sample configuration file and then including a BED_MESH_CALIBRATE call in your print start macro.
 
 To find out more about the parameters used in the bed mesh scan you can read the Klipper documentation here: [Bed Mesh Calibration](https://www.klipper3d.org/G-Codes.html#bed_mesh_calibrate)
 
-# Bed Mesh Scan Height
+## Bed Mesh Scan Height
 
 The scan height is set by the `horizontal_move_z` option in `[bed_mesh]`. In
 addition it can be supplied with the `BED_MESH_CALIBRATE` gcode command via the
@@ -202,7 +241,7 @@ It should be noted that if the probe is more than 4mm above the surface then the
 results will be invalid. Thus, scanning is not possible on beds with severe
 surface deviation or beds with extreme tilt that hasn't been corrected.
 
-# Rapid (Continuous) Scanning
+## Rapid (Continuous) Scanning
 
 When performing a rapid bed mesh scan there is little time to accumulate many samples per point so that they can be averaged and have noise removed. Therefore a rapid scan may not be as accurate as a standard bed mesh scan but in most cases it will still produce a fine first layer.
 
@@ -210,41 +249,28 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 
 # FAQ - Frequently Asked Questions
 
-### Sometimes I get a "Probe Triggered Before Movement" Error
+## Sometimes I get a "Probe Triggered Before Movement" Error
 
 - This will happen when you try to execute two successive `PROBE` commands. Always raise the gantry by a few mm between `PROBE` commands to avoid this.
 
-### Eddy is performing Z Hops when running Bed Mesh
+## Eddy is performing Z Hops when running Bed Mesh
 
 - Make sure you are using the correct macro call.
   `BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan`
 - Remove or alter KAMP - Adaptive Bed Mesh and any custom BED_MESH_CALIBRATE macros. Use klipper adaptive mesh instead or alternatively do not include KAMP/Adaptive_Meshing.cfg in your KAMP_Settings.cfg
   [Information on Adaptive Mesh Here](https://www.klipper3d.org/Bed_Mesh.html#adaptive-meshes)
 
-### Which Eddy version should I use?
+## Which Eddy version should I use?
 
 - It depends on your needs. Eddy USB and Eddy Coil are nearly identical, however Eddy Coil is more for toolhead boards and connects via I2C connectors.
 - Eddy Coil does not have temperature compensation and so it may be less reliable for homing if you are using it within a sealed chamber..
 
-### My z-offset doesnt seem to save and resets, is there a work around or fix?
+## My z-offset doesnt seem to save and resets, is there a work around or fix?
 
 - Coming from a standard probe, this may seem like a bug. However if you have calibrated the Eddy correctly and are using the special homing macros, then there will be no need for a z-offset. Explaining why is a bit long winded but essentially when it comes to an Eddy, the z-offset parameter does not adjust the height at which the nozzle prints, it just adjusts the height at which homing or probing triggers. If you have a mind that enjoys understanding things at a deeper level then here is a writeup to give you something to chew on: [Z-Offsets with Eddy Current Probes](https://gist.github.com/bigtreetech/484380b26be613b9139bc537510393df)
-- While we strongly recommend simply performing the Eddy probe calibration in order to get a nozzle height that is just right, you can still simulate a standard z-offset by uncommenting certain macros in the sample configuration file. Simply uncomment any macro that is related to the beta z-offset functionality and you will be able to use the standard mainsail buttons to raise/lower then nozzle and save that height as a z-offset.
+- While we strongly recommend simply performing the Eddy probe calibration in order to get a nozzle height that is just right, you can still simulate a standard z-offset by using the [Z-offset beta sample configuration file](sample-bigtreetech-eddy-zoffbeta.cfg). Simply uncomment any macro that is related to the beta z-offset functionality and you will be able to use the standard mainsail buttons to raise/lower then nozzle and save that height as a z-offset.
 
-# Known Issues
+## My Eddy Macros Conflict With My KNOMI Macros
 
-- BTT Knomi will cause z-hops during a scan. If you are using the Eddy as an endstop then simply comment out the G28 macro in KNOMI.CFG and use the macro from the sample Eddy config. If you are using another device as an endstop then modify your G28 macro in the KNOMI.cfg, specifically this line.
-
-  ```
-  SET_GCODE_VARIABLE MACRO=_KNOMI_STATUS VARIABLE=probing VALUE=True
-  BTT_BED_MESH_CALIBRATE
-  SET_GCODE_VARIABLE MACRO=_KNOMI_STATUS VARIABLE=probing VALUE=False
-  ```
-
-  so that it looks like this
-
-  ```
-  SET_GCODE_VARIABLE MACRO=_KNOMI_STATUS VARIABLE=probing VALUE=True
-  BTT_BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan
-  SET_GCODE_VARIABLE MACRO=_KNOMI_STATUS VARIABLE=probing VALUE=False
-  ```
+- The Eddy and the KNOMI share similar Macros. All of the needed functionality for the KNOMI has been built into the Eddy macros. Please comment out the KNOMI macros which conflict and use the Eddy macros.
+- Note that you may need to uncomment some lines in the Eddy macros that are specifically included for people who run the KNOMI. Check the macros to see which lines have been commented and then uncomment them if they are needed for KNOMI.
