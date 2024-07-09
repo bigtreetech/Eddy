@@ -1,11 +1,6 @@
-# Installation of EDDY USB V1 - Last Updated 08 July 2024
+# Installation Guide For EDDY USB And Eddy Coil - Last Updated 09 July 2024
 
-> [!WARNING]  
-> [KAMP aka Klipper-Adaptive-Meshing-Purging](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) should be removed from your klipper prior to using Eddy. Please comment out the include line. ie `#[include ./KAMP/adaptive_meshing.cfg]` from your KAMP_SETTINGS.cfg
->
-> Instead KAMP has been integrated into klipper as of January 2024 and you should use the ADAPTIVE=1 option in your BED_MESH_CALIBRATION calls. You can find more [Information on Adaptive Mesh Here](https://www.klipper3d.org/Bed_Mesh.html#adaptive-meshes)
-
-> [!WARNING]
+> [!IMPORTANT]
 > As it stands, Eddy requires the use of BTT's fork of klipper found [HERE](https://github.com/bigtreetech/klipper). This is included in the guide as the first step.
 >
 > The pull request to merge this into mainline klipper has been made and it should be integrated shortly. Until then this is a STRICT REQUIREMENT.
@@ -31,6 +26,7 @@
 - - [Which Eddy version should I use?](#which-eddy-version-should-i-use)
 - - [My z-offset doesnt seem to save and resets, is there a work around or fix?](#my-z-offset-doesnt-seem-to-save-and-resets-is-there-a-work-around-or-fix)
 - - [My Eddy Macros Conflict With My KNOMI Macros](#my-eddy-macros-conflict-with-my-knomi-macros)
+- - [KAMP And Eddy](#kamp-and-eddy)
 
 ## Video Tutorial
 
@@ -109,6 +105,8 @@ make menuconfig
 > - You wish to use the Eddy as a probe but will use another device as the z-endstop - [Use this config with no homing](sample-bigtreetech-eddy.cfg)
 > - You wish to use the Eddy as a probe AND as the z-endstop - [Use this config which includes homing](sample-bigtreetech-eddy-homing.cfg)
 > - You wish to use the Eddy as a probe AND as the z-endstop and would like to use the beta z-offset functionality - [Use this config which includes homing and z-offset](sample-bigtreetech-eddy-zoffbeta.cfg)
+>
+> Whichever config you select, copy the entire contents into your printer.cfg file.
 >
 > ### Z Endstop
 >
@@ -272,3 +270,10 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 
 - The Eddy and the KNOMI share similar Macros. All of the needed functionality for the KNOMI has been built into the Eddy macros. Please comment out the KNOMI macros which conflict and use the Eddy macros.
 - Note that you may need to uncomment some lines in the Eddy macros that are specifically included for people who run the KNOMI. Check the macros to see which lines have been commented and then uncomment them if they are needed for KNOMI.
+
+## KAMP And Eddy
+
+> [!WARNING]  
+> [KAMP aka Klipper-Adaptive-Meshing-Purging](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) should be removed from your klipper prior to using Eddy. Please comment out the include line. ie `#[include ./KAMP/adaptive_meshing.cfg]` from your KAMP_SETTINGS.cfg
+>
+> Instead KAMP has been integrated into klipper as of January 2024 and you should use the ADAPTIVE=1 option in your BED_MESH_CALIBRATION calls. You can find more [Information on Adaptive Mesh Here](https://www.klipper3d.org/Bed_Mesh.html#adaptive-meshes)
