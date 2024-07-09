@@ -96,8 +96,6 @@ make menuconfig
     Remember to change 2e8a:0003 to your device ID you found in step 9
 13. Type `ls /dev/serial/by-id/*` into the command line. The found device will be what you enter into your klipper config under [mcu eddy] for the Serial variable.
 
-    > [!NOTE]
-
 14. Type into command line `sudo reboot`
 
 ## Printer Configuration
