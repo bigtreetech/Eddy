@@ -188,16 +188,17 @@ Now that the drive current has been calibrated, the Eddy will be able to obtain 
 35. If you are in a room with an air-conditioner or an open window, it would be good to turn it off and/or close the window. We want the temperature of the Eddy to rise and breezes will stop that.
 36. As the Eddy temp rises you will automatically be asked to perform the paper pinch method at each 4C interval. Be careful not to burn yourself on the bed as the bed can get quite hot.
 37. Repeat the paper test method until the calibration completes. If you find that the temperature of the Eddy is no longer increasing then you can end the calibration early using the relevant command below.
-    > [!NOTE]
-    > By default the calibration procedure will request a manual probe every 4C between samples until the TARGET is reached.
-    >
-    > The following additional gcode commands are available during drift calibration.
-    >
-    > `PROBE_DRIFT_NEXT` may be used to force a new sample before the step delta has been reached.
-    >
-    > `PROBE_DRIFT_COMPLETE` may be used to complete calibration before the TARGET has been reached.
-    >
-    > `ABORT` may be used to end calibration and discard results.
+
+> [!NOTE]
+> By default the calibration procedure will request a manual probe every 4C between samples until the TARGET is reached.
+>
+> The following additional gcode commands are available during drift calibration.
+>
+> `PROBE_DRIFT_NEXT` may be used to force a new sample before the step delta has been reached.
+>
+> `PROBE_DRIFT_COMPLETE` may be used to complete calibration before the TARGET has been reached.
+>
+> `ABORT` may be used to end calibration and discard results.
 
 > [!TIP]
 > The Eddy thermal calibration process not only accounts for Eddy probe drift but it also accounts for thermal expansion of the mechanical components within your machine. This expansion can be very significant and it can result in poor first layers when using other probes. It is important to keep in mind that if you perform the thermal calibration with the nozzle and the heated bed turned on then there will be thermal expansion from both the hotend and the heated bed. Therefore, if you later try to perform a paper test and only have either the nozzle or the heated bed turned on you may find that there is about a 0.05 gap (not enough to cause a first layer issue but enough to feel less of a pinch on the paper). If this all sounds a bit confusing then don't worry. All you need to know is that you should perform the calibration with the bed and the nozzle both hot and then subsequently print with the bed and the nozzle both hot and you will get fantastic first layers.
