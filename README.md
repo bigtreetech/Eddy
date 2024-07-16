@@ -1,4 +1,4 @@
-# Installation Guide For EDDY USB And Eddy Coil - Last Updated 09 July 2024
+# Installation Guide For EDDY USB And Eddy Coil - Last Updated 16 July 2024
 
 > [!IMPORTANT]
 > As it stands, Eddy requires the use of BTT's fork of klipper found [HERE](https://github.com/bigtreetech/klipper). This is included in the guide as the first step.
