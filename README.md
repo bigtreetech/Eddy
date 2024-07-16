@@ -52,11 +52,13 @@ The dimensions below will help you to understand where the center of the coil is
 ## Compiling Firmware
 
 > [!IMPORTANT]
+> Eddy and Eddy Coil are ONLY compatible with klipper installations that are using a virtual environment based on python 3. Even if you have python 3 installed on your system this does not mean that your klippy virtual environment has been created using python 3. If you receive an error that says something like: `Internal error during connect: split() takes no keyword arguments` then you have a klippy host that is based on a python 2 virtual environment and you need to get it upgraded. The easiest way to do this is to use [KIAUH](https://github.com/dw-0/kiauh) which will allow you to reinstall the klippy host without overwriting your configs while selecting the python 3 option.
+
+> [!IMPORTANT]
 > The firmware compilation instructions below only apply to the Eddy USB. If you are using an Eddy Coil then you will have it connected to the I2C port on a toolboard. You will need to compile firmware for that toolboard using the BIGTREETECH branch and then install it onto that toolboard. When configuring the Eddy within Klipper you will just need to specify that it communicates using the I2C port on that toolboard which will depend on the pins for that board.
 >
 > After changing to the BTT specific branch of Klipper, you should update all of your device firmware such that it is compiled using this branch. This applies to motherboard and toolboards that may be connected to your system. Soon, the BTT branch will be merged with mainline klipper and at that point, you will be able to run mainline on all devices. We recommend ensuring that all other devices are updated before proceeding with this guide.
 >
-> Still accurate as of **02 July 2024**.
 
 1. Change to BTT klipper by entering the following via SSH
 
