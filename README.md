@@ -19,6 +19,7 @@
 - - [Bed Mesh Scan Height](#bed-mesh-scan-height)
 - - [Bed Mesh Rapid Scanning](#rapid-continuous-scanning)
 - [FAQ - Frequently Asked Questions](#faq---frequently-asked-questions)
+- - [Sometimes I get Error during homing probe: Eddy current sensor error](#sometimes-i-get-error-during-homing-probe-eddy-current-sensor-error)
 - - [Sometimes I get a "Probe Triggered Before Movement" Error](#sometimes-i-get-a-probe-triggered-before-movement-error)
 - - [Eddy is performing Z Hops when running Bed Mesh](#eddy-is-performing-z-hops-when-running-bed-mesh)
 - - [Which Eddy version should I use?](#which-eddy-version-should-i-use)
