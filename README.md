@@ -197,9 +197,9 @@ Now that the drive current has been calibrated, the Eddy will be able to obtain 
 >
 > The following additional gcode commands are available during drift calibration.
 >
-> `PROBE_DRIFT_NEXT` may be used to force a new sample before the step delta has been reached.
+> `TEMPERATURE_PROBE_NEXT` may be used to force a new sample before the step delta has been reached.
 >
-> `PROBE_DRIFT_COMPLETE` may be used to complete calibration before the TARGET has been reached.
+> `TEMPERATURE_PROBE_COMPLETE` may be used to complete calibration before the TARGET has been reached.
 >
 > `ABORT` may be used to end calibration and discard results.
 
@@ -257,7 +257,7 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 
 - This generally indicates that the oscillator within the Eddy sensor is not at a valid value before the probe/homing attempt starts. We recommend trying the following steps:
 
-1. Double check your probe height. It may be that it is too close to the bed or too high. Remember that we recommend that it is at 2mm-3mm above the bed when the nozzle is just touching the bed. Around 2.5mm is optimal in most cases but if you are finding that your probe is having errors at high temperatures then try to drop it just below 2mm.
+1. Double check your probe height. It may be that it is too close to the bed or too high. Remember that we recommend that it is at 2mm-3mm above the bed when the nozzle is just touching the bed. Around 2.5mm is optimal in most cases but if you are finding that your probe is having errors at high temperatures then try to drop it just below 2mm. However, if your probe is having erros during QGL attempts then you may need to raise it slightly.
 2. After you have adjusted the probe height, remove all of the calibration settings from your config file and recalibrate the eddy.
 3. If you still receive this error then increase the `reg_drive_current` value to 16 from 15 if it is currently set to 15.
 
