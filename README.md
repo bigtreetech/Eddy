@@ -175,7 +175,7 @@ Now that the drive current has been calibrated, the Eddy will be able to obtain 
 > Before you do this, it's a good idea to perform a Quad Gantry Leveling (Voron etc)
 
 27. Home All Axes
-28. Use command `BED_MESH_CALIBRATE METHOD=scan SCAN_MODE=rapid`
+28. Use command `BTT_BED_MESH_CALIBRATE METHOD=rapid_scan`
 29. Once completed use `SAVE_CONFIG`
 
 ## 5. Temperature Compensation Calibration (Eddy USB ONLY)
@@ -185,7 +185,7 @@ Now that the drive current has been calibrated, the Eddy will be able to obtain 
 
 30. Home All Axes and move Z 5 mm above the bed by typing `G0 Z5` or using the movement UI.
 31. Set idle timeout by typing `SET_IDLE_TIMEOUT TIMEOUT=36000`
-32. Run `PROBE_DRIFT_CALIBRATE PROBE=btt_eddy TARGET=56 STEP=4`
+32. Run `TEMPERATURE_PROBE_CALIBRATE PROBE=btt_eddy TARGET=56 STEP=4`
 33. This will cause the UI to display the z axis adjustment box. Use [the paper method](https://www.klipper3d.org/Bed_Level.html#the-paper-test) mentioned here to pinch a sheet of paper between the nozzle and the bed and then accept the value.
 34. Turn on your heat bed to the maximum value and your nozzle to 220C.
 35. If you are in a room with an air-conditioner or an open window, it would be good to turn it off and/or close the window. We want the temperature of the Eddy to rise and breezes will stop that.
@@ -257,7 +257,7 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 
 - This generally indicates that the oscillator within the Eddy sensor is not at a valid value before the probe/homing attempt starts. We recommend trying the following steps:
 
-1. Double check your probe height. It may be that it is too close to the bed or too high. Remember that we recommend that it is at 2mm-3mm above the bed when the nozzle is just touching the bed. Around 2.5mm is optimal.
+1. Double check your probe height. It may be that it is too close to the bed or too high. Remember that we recommend that it is at 2mm-3mm above the bed when the nozzle is just touching the bed. Around 2.5mm is optimal in most cases but if you are finding that your probe is having errors at high temperatures then try to drop it just below 2mm.
 2. After you have adjusted the probe height, remove all of the calibration settings from your config file and recalibrate the eddy.
 3. If you still receive this error then increase the `reg_drive_current` value to 16 from 15 if it is currently set to 15.
 
