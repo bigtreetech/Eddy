@@ -1,9 +1,7 @@
-# Installation Guide For EDDY USB And Eddy Coil - Last Updated 16 July 2024
+# Installation Guide For EDDY USB And Eddy Coil - Last Updated 12 August 2024
 
 > [!IMPORTANT]
-> As it stands, Eddy requires the use of BTT's fork of klipper found [HERE](https://github.com/bigtreetech/klipper). This is included in the guide as the first step.
->
-> The pull request to merge this into mainline klipper has been made and it should be integrated shortly. Until then this is a STRICT REQUIREMENT.
+> It is no longer necessary to use the BIGTREETECH fork when using the Eddy. You can now run mainline klipper. The guide that follows assumes that you are running mainline klipper. If you are migrating from the BIGTREETECH fork back to mainline then we suggest erasing all of the configuration and calibration data in your config file (including that within the auto save section) and performing the calibration again while using our latest configuration files.
 
 # Index
 
@@ -36,14 +34,16 @@ For a video tutorial covering many of the points below, please watch the [video 
 
 The Eddy has been designed to mount onto a standard Voron X carriage where the Omron inductive probe would usually mount. Additional mounts are provided for common printers [within the 3D folder of this repo.](https://github.com/bigtreetech/Eddy/tree/master/3D/EDDY_PRINT_PARTS) For detailed wiring and mounting instructions for both the Eddy and Eddy Coil, please refer to the PDF manual.
 
+In all cases, mount the Eddy between 2mm and 3mm from the surface of the bed when the nozzle is just touching the bed. Mounting it too close could result in probe errors from the oscillator circuit signal saturating and mounting it too far could result in the oscillator circuit signal collapsing. Use thin shims (such as business cards) to measure this distance approximately.
+
 > [!IMPORTANT]
 > When mounting the Eddy, always ensure that the rear (where the electronic components are located) is situated further away from the hotend than the front.
 
 > [!TIP]
-> When installing the Eddy (USB version), try to avoid running the cable alongside other cables that are very electrically noisy such as stepper motor cables. If you must run it alongside such cables then do your best to separate the two. Additionally, if you are handy with a crimping tool and have additional crimps, it is also a good idea to trim the cable down to the needed length by trimming the end that connects to the Eddy. This is non-essential and should only be attempted by those who are confident that they can carry the task out without error. If there is slack remaining in the cable, do not wind it in a coil, rather wind it in a figure of 8.
+> When installing the Eddy (USB version), try to avoid running the cable alongside other cables that are very electrically noisy such as stepper motor cables. If you must run it alongside such cables then do your best to separate the two. If there is slack remaining in the cable, do not wind it in a coil, rather wind it in a figure of 8.
 
 > [!IMPORTANT]
-> Some people confuse the current calibration height of 20mm with the mounting height of 2mm. Be sure to mount the Eddy so that the base sits a maximum of 2mm above the nozzle. The 20mm height is only used when calibrating the coil current later in this guide.
+> Some people confuse the current calibration height of 20mm with the mounting height of 2-3mm. The 20mm height is only used when calibrating the coil current later in this guide.
 
 The dimensions below will help you to understand where the center of the coil is when measuring the X and Y offsets from point 15.
 
@@ -57,77 +57,79 @@ The dimensions below will help you to understand where the center of the coil is
 > [!IMPORTANT]
 > The firmware compilation instructions below only apply to the Eddy USB. If you are using an Eddy Coil then you will have it connected to the I2C port on a toolboard. You will need to compile firmware for that toolboard using the BIGTREETECH branch and then install it onto that toolboard. When configuring the Eddy within Klipper you will just need to specify that it communicates using the I2C port on that toolboard which will depend on the pins for that board.
 >
-> After changing to the BTT specific branch of Klipper, you should update all of your device firmware such that it is compiled using this branch. This applies to motherboard and toolboards that may be connected to your system. Soon, the BTT branch will be merged with mainline klipper and at that point, you will be able to run mainline on all devices. We recommend ensuring that all other devices are updated before proceeding with this guide.
->
+> If you are coming from the old BIGTREETECH branch of klipper then we recommend using KIAUH to move back to the mainline branch. We also recommend updating the firmware on all of your klipper devices so that it too is running on a binary compiled from mainline.
 
-1. Change to BTT klipper by entering the following via SSH
+1. Ensure that you are using mainline klipper by typing the following commands via SSH:
 
 ```
 cd ~/klipper
-git remote add eddy https://github.com/bigtreetech/klipper
-git fetch eddy
-git checkout eddy/eddy
+git checkout master
 ```
 
-> 2. SSH into BIGTREETECH PI or your host device
-> 3. Type
+> 2. Next, type
 
 ```
 cd ~/klipper
 make menuconfig
 ```
 
-4. Use these settings to compile the firmware.
+3. Use these settings to compile the firmware.
 
    ![Firmware Image](https://github.com/bigtreetech/Eddy/blob/master/Images/compile.png?raw=true)
-6. Once set, hit 'Q' and when asked, select yes to save.
-7. Type `make` to compile.
-8. Disconnect power to Eddy
-9. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your BIGTREETECH Pi
 
-   ![Boot Image](https://github.com/bigtreetech/Eddy/blob/master/Images/boot.png?raw=true)
-10. SSH into host device
-11. Type `lsusb` into the command line. You should see eddy.
+4. Once set, hit 'Q' and when asked, select yes to save.
+5. Type `make` to compile.
+6. Disconnect power to Eddy
+7. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your BIGTREETECH Pi.
+
+> [!IMPORTANT]
+> Don't disassemble your Eddy. The button is fully accessible without disassembly. The image is shown in an exploded view to make the button easier to see.
+
+![Boot Image](https://github.com/bigtreetech/Eddy/blob/master/Images/boot.png?raw=true)
+
+8. SSH into host device
+9. Type `lsusb` into the command line. You should see eddy.
 
 ![LSUSB Image](https://github.com/bigtreetech/Eddy/blob/master/Images/lsusb.png?raw=true)
 
-11. Type `cd ~/klipper` into command line
-12. Type `make flash FLASH_DEVICE=2e8a:0003`
+10. Type `cd ~/klipper` into command line
+11. Type `make flash FLASH_DEVICE=2e8a:0003`
     Remember to change 2e8a:0003 to your device ID you found in step 9
-13. Type `ls /dev/serial/by-id/*` into the command line. The found device will be what you enter into your klipper config under [mcu eddy] for the Serial variable.
+12. Type `ls /dev/serial/by-id/*` into the command line. The found device will be what you enter into your klipper config under [mcu eddy] for the Serial variable.
 
-14. Type into command line `sudo reboot`
+13. Type into command line `sudo reboot`
 
 ## Printer Configuration
 
 > [!IMPORTANT]
->
-> ### Selecting the right config file for your needs
->
-> Now that you have the right firmware loaded onto your device, it is time to complete the Klipper configuration. BIGTREETECH provides three different sample configuration files to get you going. You will need to decide which one suits your needs the best. Choose the file that works best for you based on the criteria below. Read the comments in the selected configuration file carefully as they will help you to understand how to modify certain parameters to your installation.
->
-> - You wish to use the Eddy as a probe but will use another device as the z-endstop - [Use this config with no homing](sample-bigtreetech-eddy.cfg)
-> - You wish to use the Eddy as a probe AND as the z-endstop - [Use this config which includes homing](sample-bigtreetech-eddy-homing.cfg)
-> - You wish to use the Eddy as a probe AND as the z-endstop and would like to use the beta z-offset functionality - [Use this config which includes homing and z-offset](sample-bigtreetech-eddy-zoffbeta.cfg)
->
-> Whichever config you select, copy the entire contents into your printer.cfg file.
->
-> ### Z Endstop
->
-> As mentioned in the paragraph above, you can use the Eddy as the z endstop or you can use another device as an endstop. If you decide to use another device as an endstop then set up your homing and endstop according to that device.
->
-> If you want to enable Z-Homing/Endstop for the eddy do the following things:
->
-> 1. Under your [stepper_z] in printer.cfg change `endstop_pin: PA5` to `endstop_pin: probe:z_virtual_endstop` and comment out or remove `position_endstop: 0`. Note that your current endstop may not be PA5 so just look for the line that matches your current endstop and change it.
->
-> 2. Ensure that you have selected the correct sample configuration file and that the entire contents of that file have been copied into your `printer.cfg file`. Take note that if you are using a KNOMI then there may be some macros that conflict with the macros in the KNOMI.cfg file. To resolve the conflicts, comment out the macros in the KNOMI.cfg file and uncomment the lines from the Eddy macros that deal with KNOMI functionality.
->
-> 3. Edit the parts of the config file that are unique to your setup. These may be things like those in the list below. Follow the comments in the config file to help you to edit the values so that they work best with your setup.
->
-> - MCU serial
-> - X offset and Y offset
-> - Mesh_min and mesh_max
-> - Home_xy_position
+> Read these steps well. Following them closely will help to ensure that your installation works without any hassles.
+
+### Select the right config file for your needs
+
+14. Now that you have the right firmware loaded onto your device, it is time to complete the Klipper configuration. BIGTREETECH provides three different sample configuration files to get you going. You will need to decide which one suits your needs the best. Choose the file that works best for you based on the criteria below. Read the comments in the selected configuration file carefully as they will help you to understand how to modify certain parameters to your installation.
+
+- You wish to use the Eddy as a probe but will use another device as the z-endstop - [Use this config with no homing](sample-bigtreetech-eddy.cfg)
+- You wish to use the Eddy as a probe AND as the z-endstop - [Use this config which includes homing](sample-bigtreetech-eddy-homing.cfg)
+- You wish to use the Eddy as a probe AND as the z-endstop and would like to use the beta z-offset functionality - [Use this config which includes homing and z-offset](sample-bigtreetech-eddy-zoffbeta.cfg)
+
+Whichever config you select, copy the entire contents into your printer.cfg file.
+
+### Z Endstop
+
+As mentioned in the paragraph above, you can use the Eddy as the z endstop or you can use another device as an endstop. If you decide to use another device as an endstop then set up your homing and endstop according to that device.
+
+15. If you want to enable Z-Homing/Endstop for the eddy do the following things:
+
+a. Under your [stepper_z] in printer.cfg change `endstop_pin: PA5` to `endstop_pin: probe:z_virtual_endstop` and comment out or remove `position_endstop: 0`. Note that your current endstop may not be PA5 so just look for the line that matches your current endstop and change it.
+
+b. Ensure that you have selected the correct sample configuration file and that the entire contents of that file have been copied into your `printer.cfg file`. Take note that if you are using a KNOMI then there may be some macros that conflict with the macros in the KNOMI.cfg file. To resolve the conflicts, comment out the macros in the KNOMI.cfg file and uncomment the lines from the Eddy macros that deal with KNOMI functionality.
+
+c. Edit the parts of the config file that are unique to your setup. These may be things like those in the list below. Follow the comments in the config file to help you to edit the values so that they work best with your setup.
+
+- MCU serial
+- X offset and Y offset
+- Mesh_min and mesh_max
+- Home_xy_position
 
 > [!IMPORTANT]
 > The sample configuration requires you to adjust the **x_offset** and **y_offset** to match your probe position relative to your nozzle. You can do that by following these steps found [HERE](https://www.klipper3d.org/Probe_Calibrate.html) and also by using the images at the top of this guide which show the center location of the Eddy coil. The settings for the standard Voron X carriage mount are included in all sample configuration files.
@@ -250,6 +252,14 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 
 # FAQ - Frequently Asked Questions
 
+## Sometimes I get `Error during homing probe: Eddy current sensor error`
+
+- This generally indicates that the oscillator within the Eddy sensor is not at a valid value before the probe/homing attempt starts. We recommend trying the following steps:
+
+1. Double check your probe height. It may be that it is too close to the bed or too high. Remember that we recommend that it is at 2mm-3mm above the bed when the nozzle is just touching the bed. Around 2.5mm is optimal.
+2. After you have adjusted the probe height, remove all of the calibration settings from your config file and recalibrate the eddy.
+3. If you still receive this error then increase the `reg_drive_current` value to 16 from 15 if it is currently set to 15.
+
 ## Sometimes I get a "Probe Triggered Before Movement" Error
 
 - This will happen when you try to execute two successive `PROBE` commands. Always raise the gantry by a few mm between `PROBE` commands to avoid this.
@@ -257,7 +267,7 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 ## Eddy is performing Z Hops when running Bed Mesh
 
 - Make sure you are using the correct macro call.
-  `BED_MESH_CALIBRATE SCAN_MODE=rapid METHOD=scan`
+  `BTT_BED_MESH_CALIBRATE METHOD=rapid_scan`
 - Remove or alter KAMP - Adaptive Bed Mesh and any custom BED_MESH_CALIBRATE macros. Use klipper adaptive mesh instead or alternatively do not include KAMP/Adaptive_Meshing.cfg in your KAMP_Settings.cfg
   [Information on Adaptive Mesh Here](https://www.klipper3d.org/Bed_Mesh.html#adaptive-meshes)
 
