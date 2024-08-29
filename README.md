@@ -265,7 +265,7 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 
 - This will happen when you try to execute two successive `PROBE` commands. Always raise the gantry by a few mm between `PROBE` commands to avoid this.
 
-## Eddy is performing Z Hops when running Bed Mesh
+## Eddy is performing Z Hops or pausing when running Bed Mesh
 
 - Make sure you are using the correct macro call.
   `BED_MESH_CALIBRATE METHOD=rapid_scan`
@@ -276,6 +276,10 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 
 - It depends on your needs. Eddy USB and Eddy Coil are nearly identical, however Eddy Coil is more for toolhead boards and connects via I2C connectors.
 - Eddy Coil does not have temperature compensation and so it may be less reliable for homing if you are using it within a sealed chamber..
+
+## Error: gcode command < ANY GCODE COMMAND > already registered
+
+- This will happen when you have conflicting gcode macros. Check all of your gcode macros for ones that share the same name and arbitrate the conflicts. Generally, you should select the functionality from the Eddy macros if there is a conflict and you are not sure what to do.
 
 ## My z-offset doesnt seem to save and resets, is there a work around or fix?
 
