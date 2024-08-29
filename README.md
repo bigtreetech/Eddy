@@ -175,7 +175,7 @@ Now that the drive current has been calibrated, the Eddy will be able to obtain 
 > Before you do this, it's a good idea to perform a Quad Gantry Leveling (Voron etc)
 
 27. Home All Axes
-28. Use command `BTT_BED_MESH_CALIBRATE METHOD=rapid_scan`
+28. Use command `BED_MESH_CALIBRATE METHOD=rapid_scan`
 29. Once completed use `SAVE_CONFIG`
 
 ## 5. Temperature Compensation Calibration (Eddy USB ONLY)
@@ -268,7 +268,7 @@ Rapid scans can be improved by allowing the travel planner to slightly overshoot
 ## Eddy is performing Z Hops when running Bed Mesh
 
 - Make sure you are using the correct macro call.
-  `BTT_BED_MESH_CALIBRATE METHOD=rapid_scan`
+  `BED_MESH_CALIBRATE METHOD=rapid_scan`
 - Remove or alter KAMP - Adaptive Bed Mesh and any custom BED_MESH_CALIBRATE macros. Use klipper adaptive mesh instead or alternatively do not include KAMP/Adaptive_Meshing.cfg in your KAMP_Settings.cfg
   [Information on Adaptive Mesh Here](https://www.klipper3d.org/Bed_Mesh.html#adaptive-meshes)
 
