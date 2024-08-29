@@ -23,6 +23,7 @@
 - - [Sometimes I get a "Probe Triggered Before Movement" Error](#sometimes-i-get-a-probe-triggered-before-movement-error)
 - - [Eddy is performing Z Hops when running Bed Mesh](#eddy-is-performing-z-hops-when-running-bed-mesh)
 - - [Which Eddy version should I use?](#which-eddy-version-should-i-use)
+- - [Error: gcode command < ANY GCODE COMMAND > already registered](#error-gcode-command--any-gcode-command--already-registered)
 - - [My z-offset doesnt seem to save and resets, is there a work around or fix?](#my-z-offset-doesnt-seem-to-save-and-resets-is-there-a-work-around-or-fix)
 - - [My Eddy Macros Conflict With My KNOMI Macros](#my-eddy-macros-conflict-with-my-knomi-macros)
 - - [KAMP And Eddy](#kamp-and-eddy)
