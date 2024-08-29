@@ -1,4 +1,4 @@
-# Installation Guide For EDDY USB And Eddy Coil - Last Updated 12 August 2024
+# Installation Guide For EDDY USB And Eddy Coil
 
 > [!IMPORTANT]
 > It is no longer necessary to use the BIGTREETECH fork when using the Eddy. You can now run mainline klipper. The guide that follows assumes that you are running mainline klipper. If you are migrating from the BIGTREETECH fork back to mainline then we suggest erasing all of the configuration and calibration data in your config file (including that within the auto save section) and performing the calibration again while using our latest configuration files.
