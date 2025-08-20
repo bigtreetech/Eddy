@@ -79,10 +79,13 @@ make menuconfig
 
    ![Firmware Image](https://github.com/bigtreetech/Eddy/blob/master/Images/compile.png?raw=true)
 
-4. Once set, hit 'Q' and when asked, select yes to save.
-5. Type `make` to compile.
-6. Disconnect power to Eddy
-7. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your BIGTREETECH Pi.
+> [!WARNING]
+> If you do not change the Flash chip configuration to the CLKDIV 4 one pictured, your probe will appear to work normally at first, however it will only intermittently start up when powered on. 
+
+5. Once set, hit 'Q' and when asked, select yes to save.
+6. Type `make` to compile.
+7. Disconnect power to Eddy
+8. Push and hold boot button on Eddy (Its next to where the cable plugs in) and at the same time, plug in the cable to your BIGTREETECH Pi.
 
 > [!IMPORTANT]
 > Don't disassemble your Eddy. The button is fully accessible without disassembly. The image is shown in an exploded view to make the button easier to see.
